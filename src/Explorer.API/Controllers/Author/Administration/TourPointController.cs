@@ -5,6 +5,9 @@ using Explorer.Tours.Core.UseCases.Administration;
 using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.TagHelpers;
+using System.Text;
+using System.Text.Json;
 
 namespace Explorer.API.Controllers.Author.Administration
 {
@@ -15,6 +18,7 @@ namespace Explorer.API.Controllers.Author.Administration
     public class TourPointController : BaseApiController
     {
         private readonly ITourPointService _tourPointService;
+        private static readonly HttpClient _client = new();
 
         public TourPointController(ITourPointService tourPointService)
         {
@@ -28,7 +32,39 @@ namespace Explorer.API.Controllers.Author.Administration
             return CreateResponse(result);
         }
         
-        [HttpPost]/*
+        [HttpPost]
+        public async Task<ActionResult<TourPointDto>> CreateTourPoint([FromBody] TourPointDto tourPoint)
+        {
+            var result = await CreateTourPointGo(_client,tourPoint);
+            return result;
+        }
+
+        static async Task<TourPointDto> CreateTourPointGo(HttpClient httpClient, TourPointDto tourPoint)
+        {
+            var jsonContent = new StringContent
+                (
+                    JsonSerializer.Serialize(tourPoint),
+                    Encoding.UTF8,
+                    "application/json"
+                );
+
+            HttpResponseMessage response = await _client.PostAsync(
+                    "http://localhost:8082/tourPoints", jsonContent
+                 );
+
+            var responseContent = await response.Content.ReadFromJsonAsync<TourPointDto>();
+            return responseContent;
+        }
+
+
+        [HttpGet]
+        public async Task<ActionResult<TourPointDto>> GetTourPointbyTourId([FromBody] TourPointDto tourPoint)
+        {
+            var result = await CreateTourPointGo(_client, tourPoint);
+            return result;
+        }
+
+        /*
         public (ActionResult<TourPointDto>, int) Create([FromBody] TourPointDto tourPoint)
         {
             var result = _tourPointService.Create(tourPoint);
@@ -36,7 +72,7 @@ namespace Explorer.API.Controllers.Author.Administration
 
             return (CreateResponse(result), result.Value.Id);
         }*/
-        
+        /*
         public ActionResult<PagedResult<TourPointDto>> Create([FromBody] TourPointDto tourPoint)
         {
             var result = _tourPointService.Create(tourPoint);
@@ -44,9 +80,12 @@ namespace Explorer.API.Controllers.Author.Administration
             
             return CreateResponse(result);
         }
-
+        */
+        
         [Authorize(Policy = "authorPolicy")]
         [HttpPut("{id:int}")]
+       
+
         public ActionResult<TourPointDto> Update([FromBody] TourPointDto tourPoint)
         {
             var result = _tourPointService.Update(tourPoint);
@@ -77,5 +116,6 @@ namespace Explorer.API.Controllers.Author.Administration
             return CreateResponse(Result.Ok(result));
         }
 
+        
     }
 }
