@@ -127,7 +127,7 @@ namespace Explorer.Tours.Core.UseCases.TourExecuting
                     int tourPointForChangeId = tp.Id;
                     te.TourPoints.FirstOrDefault(tep => tep.TourPointId == tourPointForChangeId).Completed = true;
                     te.TourPoints.FirstOrDefault(tep => tep.TourPointId == tourPointForChangeId).CompletionTime = DateTime.UtcNow;
-                    te.TourPoints.FirstOrDefault(tep => tep.TourPointId == tourPointForChangeId).Secret = tp.Secret;
+                   // te.TourPoints.FirstOrDefault(tep => tep.TourPointId == tourPointForChangeId).Secret = tp.Secret;
                 }
             }
         }
