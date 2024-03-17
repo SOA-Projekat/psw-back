@@ -16,7 +16,7 @@ namespace Explorer.Tours.Core.Domain.Tours
 
         public string Description { get; private set; }
 
-        public List<string> Tags { get; private set; }
+        //public List<string> Tags { get; private set; }
 
 
         public TourStatus Status { get;  set; }
@@ -25,15 +25,17 @@ namespace Explorer.Tours.Core.Domain.Tours
 
         public int UserId { get; private set; }
 
-        public DateTime? PublishedDateTime { get; private set; }
+        public List<Equipment> Equipments { get; } = new List<Equipment> ();
 
-		public DateTime? ArchivedDateTime { get; private set; }
+       // public DateTime? PublishedDateTime { get; private set; }
+
+		//public DateTime? ArchivedDateTime { get; private set; }
 
 
 		public ICollection<TourPoint> TourPoints { get; } = new List<TourPoint>();
 
-        public ICollection<TourCharacteristic> TourCharacteristics { get; } = new List<TourCharacteristic>();
-        public ICollection<TourReview> TourReviews { get; }= new List<TourReview>();
+        //public ICollection<TourCharacteristic> TourCharacteristics { get; } = new List<TourCharacteristic>();
+        //public ICollection<TourReview> TourReviews { get; }= new List<TourReview>();
 
         public Tour(string name, DifficultyLevel difficultyLevel, string? description, int userId)
         {
@@ -47,8 +49,8 @@ namespace Explorer.Tours.Core.Domain.Tours
             DifficultyLevel = difficultyLevel;
             Description = description;
             Status = TourStatus.Draft;
-            PublishedDateTime = null; 
-            ArchivedDateTime = null;
+            //PublishedDateTime = null; 
+            //ArchivedDateTime = null;
             Price = 0;
             UserId = userId;
             
@@ -66,7 +68,7 @@ namespace Explorer.Tours.Core.Domain.Tours
 
 
 		}
-
+        /*
         public void setCharacteristic(double distance, double duration, TransportType transportType)
         {
             TourCharacteristic characteristic = TourCharacteristics.FirstOrDefault(c => c.TransportType == transportType);
@@ -103,7 +105,7 @@ namespace Explorer.Tours.Core.Domain.Tours
             tour.Status = TourStatus.Archived;
             tour.ArchivedDateTime = DateTime.UtcNow;
 		}
-
+        */
 
 
     }

@@ -59,9 +59,9 @@ public class ToursProfile : Profile
       .ForMember(dest => dest.DifficultyLevel, opt => opt.MapFrom(src => Enum.Parse(typeof(DifficultyLevel), src.DifficultyLevel)))
       .ForMember(dest => dest.Status, opt => opt.MapFrom(src => Enum.Parse(typeof(TourStatus), src.Status)))
      .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
-     .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
-     .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags))
-     .ForMember(dest => dest.PublishedDateTime, opt => opt.MapFrom(src => src.PublishedDateTime));
+     .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price));
+        //.ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags))
+        //.ForMember(dest => dest.PublishedDateTime, opt => opt.MapFrom(src => src.PublishedDateTime));
 
 
         CreateMap<Tour, TourDTO>()
@@ -70,9 +70,9 @@ public class ToursProfile : Profile
         .ForMember(dest => dest.DifficultyLevel, opt => opt.MapFrom(src => src.DifficultyLevel.ToString()))
         .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
         .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
-        .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
-        .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags))
-        .ForMember(dest => dest.PublishedDateTime, opt => opt.MapFrom(src => src.PublishedDateTime));
+        .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price));
+        //.ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags))
+        //.ForMember(dest => dest.PublishedDateTime, opt => opt.MapFrom(src => src.PublishedDateTime));
 
 
         CreateMap<TourEquipmentDto, TourEquipment>().ReverseMap();
