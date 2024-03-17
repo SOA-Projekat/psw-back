@@ -1,10 +1,12 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.Administration;
+using Explorer.Tours.Core.Domain;
 using Explorer.Tours.Core.Domain.Tours;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text;
 
 namespace Explorer.API.Controllers.Author.Authoring
 {
@@ -12,12 +14,66 @@ namespace Explorer.API.Controllers.Author.Authoring
     public class TourController : BaseApiController
     {
         private readonly ITourService _tourService;
+        private static readonly HttpClient _client = new();
 
         public TourController(ITourService tourService)
         {
             _tourService = tourService;
         }
+        [HttpPost("go")]
+        public async Task<ActionResult<TourGoDto>> CreateGo([FromBody] TourGoDto tour)
+        {
+            var result = await CreateTourGo(_client, tour);
+            return result;
+        }
 
+        static async Task<TourGoDto> CreateTourGo(HttpClient client, TourGoDto tour)
+        {
+            var jsonContent = new StringContent
+            (
+                    JsonSerializer.Serialize(tour),
+                    Encoding.UTF8,
+                    "application/json"
+                );
+
+            HttpResponseMessage response = await _client.PostAsync(
+                    "http://localhost:8082/tours", jsonContent
+                 );
+
+            var responseContent = await response.Content.ReadFromJsonAsync<TourGoDto>();
+            return responseContent;
+        }
+
+        [HttpGet("go/{userId:int}")]
+        public async Task<ActionResult<List<TourGoDto>>> GetToursForAuthorGo(int userId)
+        {
+            var result = await FindToursGo(_client, userId);
+            return result;
+        }
+
+        static async Task<List<TourGoDto>> FindToursGo(HttpClient httpClient, int userId)
+        {
+            HttpResponseMessage response = await httpClient.GetAsync($"http://localhost:8082/tours/{userId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                try
+                {
+                    var tours = await response.Content.ReadFromJsonAsync<List<TourGoDto>>();
+                    return tours ?? new List<TourGoDto>(); // Return an empty list instead of null
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception details
+                    throw new Exception($"An error occurred while deserializing the response: {ex.Message}", ex);
+                }
+            }
+            else
+            {
+                // Consider logging the response content here to see if the service is returning an error message
+                throw new HttpRequestException($"Request failed with status code: {response.StatusCode}");
+            }
+        }
 
         [HttpPost]
         public ActionResult<TourDTO> Create([FromBody] TourDTO tour)
@@ -128,8 +184,9 @@ namespace Explorer.API.Controllers.Author.Authoring
             var result = _tourService.GetAllPublishedByAuthor(id, page, pageSize);
             return CreateResponse(result);
         }
-
+        
         //[Authorize(Policy = "touristPolicy")]
+        /*
         [HttpGet("filteredTours")]
         public ActionResult<PagedResult<TourDTO>> FilterToursByPublicTourPoints(
         [FromQuery] string publicTourPoints,
@@ -163,7 +220,7 @@ namespace Explorer.API.Controllers.Author.Authoring
                 return StatusCode(500, "Internal server error");
             }
 		}
-
+        */
 		[Authorize(Policy = "touristPolicy")]
 		[HttpGet("lastId")]
     public long GetLastTourId([FromQuery] int page,[FromQuery] int pageSize)
