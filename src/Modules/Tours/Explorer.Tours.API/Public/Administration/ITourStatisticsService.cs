@@ -23,10 +23,10 @@ namespace Explorer.Tours.API.Public.Administration
         public int GetNumberOfStartedByTour(int authorId, int tourId);
         public int GetNumberOfCompletedByTour(int authorId, int tourId);
 
-        public List<double> GetVisitedTourPointPercentage(int authorId,int tourId);
+       // public List<double> GetVisitedTourPointPercentage(int authorId,int tourId);
 
-        public List<double> GetTourPointEncounterPercentage(int authorId, int tourId);
-        public List<int> GetMaxPercentage(int authorId);
+        //public List<double> GetTourPointEncounterPercentage(int authorId, int tourId);
+       // public List<int> GetMaxPercentage(int authorId);
 
     }
 }

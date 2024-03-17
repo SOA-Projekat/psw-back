@@ -58,12 +58,7 @@ namespace Explorer.API.Controllers.Author.Administration
         }
 
 
-        [HttpGet]
-        public async Task<ActionResult<TourPointDto>> GetTourPointbyTourId([FromBody] TourPointDto tourPoint)
-        {
-            var result = await CreateTourPointGo(_client, tourPoint);
-            return result;
-        }
+        
 
         [HttpPut]
         public async Task<ActionResult<TourPointDto>> Update([FromBody] TourPointDto tourPoint)

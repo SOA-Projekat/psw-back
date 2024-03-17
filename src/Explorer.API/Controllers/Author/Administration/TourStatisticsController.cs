@@ -71,7 +71,7 @@ namespace Explorer.API.Controllers.Author.Administration
 
             return result;
         }
-
+        /*
         [HttpGet("getMaxPercentage/{authorId:int}")]
         public List<int> GetMaxPercentage(int authorId)
         {
@@ -79,22 +79,22 @@ namespace Explorer.API.Controllers.Author.Administration
 
             return result;
         }
+        
+       [HttpGet("getTourPointEncounterPercentage/{authorId:int}/{tourId:int}")]
+       public List<double> GetTourPointEncounterPercentage(int authorId,int tourId)
+       {
+           var result = _tourStatisticsService.GetTourPointEncounterPercentage(authorId,tourId);
 
-        [HttpGet("getTourPointEncounterPercentage/{authorId:int}/{tourId:int}")]
-        public List<double> GetTourPointEncounterPercentage(int authorId,int tourId)
-        {
-            var result = _tourStatisticsService.GetTourPointEncounterPercentage(authorId,tourId);
+           return result;
+       }
 
-            return result;
-        }
+       [HttpGet("getVisitedTourPointPercentage/{authorId:int}/{tourId:int}")]
+        public List<double> GetVisitedTourPointPercentage(int authorId,int tourId)
+       {
+           var result = _tourStatisticsService.GetVisitedTourPointPercentage(authorId,tourId);
 
-        [HttpGet("getVisitedTourPointPercentage/{authorId:int}/{tourId:int}")]
-         public List<double> GetVisitedTourPointPercentage(int authorId,int tourId)
-        {
-            var result = _tourStatisticsService.GetVisitedTourPointPercentage(authorId,tourId);
-
-            return result;
-        }
-
+           return result;
+       }
+       */
     }
 }

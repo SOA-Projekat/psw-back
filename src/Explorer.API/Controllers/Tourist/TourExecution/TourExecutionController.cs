@@ -34,7 +34,7 @@ namespace Explorer.API.Controllers.Tourist.TourExecution
             var result = _tourExecutionService.GetByUser(userId);
             return CreateResponse(result);
         }
-
+        /*
         [HttpPut("{tourExecutionId}/update-position/{longitude}/{latitude}")]
         public IActionResult UpdatePosition(int tourExecutionId, double longitude, double latitude)
         {
@@ -49,7 +49,7 @@ namespace Explorer.API.Controllers.Tourist.TourExecution
                 return BadRequest($"Error updating position: {ex.Message}");
             }
         }
-
+        */
         [HttpPut("{tourExecutionId}/update-status/{status}")]
         public IActionResult UpdateStatus(int tourExecutionId, string status)
         {

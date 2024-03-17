@@ -26,7 +26,7 @@ namespace Explorer.API.Controllers.Tourist.Marketplace
             _tourPointService = tourPointService;
             _shoppingCartService = shoppingCartService;
         }
-
+        /*
         [HttpGet]
         public ActionResult<PagedResult<TourDTO>> GetAll()
         {
@@ -38,7 +38,7 @@ namespace Explorer.API.Controllers.Tourist.Marketplace
             }
             return CreateResponse(result);
         }
-
+        */
         [HttpPut("buy")]
         public ActionResult<ShoppingCartDto> Buy([FromBody] ShoppingCartDto cart)
         {
@@ -56,7 +56,7 @@ namespace Explorer.API.Controllers.Tourist.Marketplace
         }
 
 
-
+        /*
         [HttpGet("selectedTour/{tourId:int}")]
 
         public ActionResult<TourDTO> Get([FromRoute] int tourId)
@@ -66,6 +66,6 @@ namespace Explorer.API.Controllers.Tourist.Marketplace
             result.Value.TourPoints = tourPoints.Value.Results;
             return CreateResponse(result);
         }
-
+        */
     }
 }
