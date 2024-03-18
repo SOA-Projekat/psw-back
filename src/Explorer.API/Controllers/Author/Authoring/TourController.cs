@@ -2,6 +2,7 @@
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.Core.Domain.Tours;
+using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -126,6 +127,13 @@ namespace Explorer.API.Controllers.Author.Authoring
         public ActionResult<PagedResult<TourDTO>> GetAllPublishedByAuthor(int id, [FromQuery] int page, [FromQuery] int pageSize)
         {
             var result = _tourService.GetAllPublishedByAuthor(id, page, pageSize);
+            return CreateResponse(result);
+        }
+
+        [HttpGet("checkTour/{authorId:int}/{tourId:int}")]
+        public ActionResult<bool> CheckTourForAuthor(int authorId, int tourId)
+        {
+            var result = _tourService.GetAllPublishedByAuthor(authorId, 1, 100).Value.Results.Exists(t => t.Id == tourId).ToResult();
             return CreateResponse(result);
         }
 
