@@ -75,6 +75,36 @@ namespace Explorer.API.Controllers.Author.Authoring
             }
         }
 
+        [HttpGet("go/single/{id:int}")]
+        public async Task<ActionResult<TourGoDto>> GetTour(int id)
+        {
+            var result = await FindTourGo(_client, id);
+            return result;
+        }
+
+        static async Task<ActionResult<TourGoDto>> FindTourGo(HttpClient httpClient, int id)
+        {
+            HttpResponseMessage response = await httpClient.GetAsync($"http://localhost:8082/tour/{id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                try
+                {
+                    var tour = await response.Content.ReadFromJsonAsync<TourGoDto>();
+                    return tour;
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception details
+                    throw new Exception($"An error occurred while deserializing the response: {ex.Message}", ex);
+                }
+            }
+            else
+            {
+                // Consider logging the response content here to see if the service is returning an error message
+                throw new HttpRequestException($"Request failed with status code: {response.StatusCode}");
+            }
+        }
         [HttpPost]
         public ActionResult<TourDTO> Create([FromBody] TourDTO tour)
         {
