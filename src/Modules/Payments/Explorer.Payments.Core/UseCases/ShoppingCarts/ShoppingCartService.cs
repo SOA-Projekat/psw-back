@@ -46,7 +46,7 @@ namespace Explorer.Payments.Core.UseCases.ShoppingCarts
         {
 
             //var accountManagementService = new AccountManagementService(_userRepository);
-            var qrCodeService = new QRCodeService();
+            //var qrCodeService = new QRCodeService();
             var cart = _shoppingCartRepository.Get(cartId);
             //qrCodeService.SendReceiptViaEmail(cart);
             var orderItems = new List<OrderItem>(cart.OrderItems);
