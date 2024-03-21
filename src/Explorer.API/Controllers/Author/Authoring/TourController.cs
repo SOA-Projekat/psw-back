@@ -50,7 +50,7 @@ namespace Explorer.API.Controllers.Author.Authoring
             var result = await FindToursGo(_client, userId);
             return result;
         }
-
+            
         static async Task<List<TourGoDto>> FindToursGo(HttpClient httpClient, int userId)
         {
             HttpResponseMessage response = await httpClient.GetAsync($"http://localhost:8082/tours/{userId}");
@@ -105,6 +105,37 @@ namespace Explorer.API.Controllers.Author.Authoring
                 throw new HttpRequestException($"Request failed with status code: {response.StatusCode}");
             }
         }
+
+        [HttpPut("go")]
+        public async Task<ActionResult<TourGoDto>> UpdateGo([FromBody] TourGoDto tour)
+        {
+            var result = await UpdateTourGo(_client, tour);
+            return result;
+        }
+
+        static async Task<TourGoDto> UpdateTourGo(HttpClient client, TourGoDto tour)
+        {
+            var existingTour = await FindTourGo(client, tour.Id);
+
+            // Merge existing key points and equipments with the new tour data
+            tour.TourPoints = existingTour.Value.TourPoints;
+            tour.Equipments = existingTour.Value.Equipments;
+            var jsonContent = new StringContent
+            (
+                    JsonSerializer.Serialize(tour),
+                    Encoding.UTF8,
+                    "application/json"
+                );
+
+            HttpResponseMessage response = await _client.PutAsync(
+                    "http://localhost:8082/tours", jsonContent
+                 );
+
+            var responseContent = await response.Content.ReadFromJsonAsync<TourGoDto>();
+            return responseContent;
+        }
+
+
         [HttpPost]
         public ActionResult<TourDTO> Create([FromBody] TourDTO tour)
         {
